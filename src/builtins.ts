@@ -2942,34 +2942,35 @@ export function compileAbort(
   message: Expression | null,
   reportNode: Node
 ): ExpressionRef {
-  var program = compiler.program;
-  var module = compiler.module;
-
-  var stringType = program.typesLookup.get("string");
-  if (!stringType) return module.createUnreachable();
-
-  var abortInstance = program.abortInstance;
-  if (!(abortInstance && compiler.compileFunction(abortInstance))) return module.createUnreachable();
-
-  var messageArg = message != null
-    ? compiler.compileExpression(message, stringType, ConversionKind.IMPLICIT, WrapMode.NONE)
-    : stringType.toNativeZero(module);
-
-  var filenameArg = compiler.ensureStaticString(reportNode.range.source.normalizedPath);
-
-  compiler.currentType = Type.void;
-  return module.createBlock(null, [
-    module.createCall(
-      abortInstance.internalName, [
-        messageArg,
-        filenameArg,
-        module.createI32(reportNode.range.line),
-        module.createI32(reportNode.range.column)
-      ],
-      NativeType.None
-    ),
-    module.createUnreachable()
-  ]);
+return compiler.module.createUnreachable();
+//  var program = compiler.program;
+//  var module = compiler.module;
+//
+//  var stringType = program.typesLookup.get("string");
+//  if (!stringType) return module.createUnreachable();
+//
+//  var abortInstance = program.abortInstance;
+//  if (!(abortInstance && compiler.compileFunction(abortInstance))) return module.createUnreachable();
+//
+//  var messageArg = message != null
+//    ? compiler.compileExpression(message, stringType, ConversionKind.IMPLICIT, WrapMode.NONE)
+//    : stringType.toNativeZero(module);
+//
+//  var filenameArg = compiler.ensureStaticString(reportNode.range.source.normalizedPath);
+//
+//  compiler.currentType = Type.void;
+//  return module.createBlock(null, [
+//    module.createCall(
+//      abortInstance.internalName, [
+//        messageArg,
+//        filenameArg,
+//        module.createI32(reportNode.range.line),
+//        module.createI32(reportNode.range.column)
+//      ],
+//      NativeType.None
+//    ),
+//    module.createUnreachable()
+//  ]);
 }
 
 /** Compiles the iterateRoots function if requires. */
